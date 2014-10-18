@@ -1,0 +1,48 @@
+From d294ce5e9488da704476cc946325f5d5e920f566 Mon Sep 17 00:00:00 2001
+From: Jonathon Walz <jwalz@1964826.no-reply.drupal.org>
+Date: Sat, 19 May 2012 18:35:03 -0500
+Subject: [PATCH] Issue #1370940: Fixed OpenLibrary not returning results for
+ ISBN searches
+
+---
+ isbn2node.internal.inc |    2 +-
+ isbn2node.module       |   10 ++++++----
+ 2 files changed, 7 insertions(+), 5 deletions(-)
+
+diff --git a/isbn2node.internal.inc b/isbn2node.internal.inc
+index b13bc6f..5b1ddfa 100644
+--- a/isbn2node.internal.inc
++++ b/isbn2node.internal.inc
+@@ -37,7 +37,7 @@ function _isbn2book_fetch_data($isbn = '') {
+       $json = file_get_contents($url);
+       // drupal_set_message(vad($json));
+       $vals = json_decode($json);
+-      if (count($vals) > 1) {
++      if (count($vals) > 0) {
+         $vals->success = 1;
+       }
+       else {
+diff --git a/isbn2node.module b/isbn2node.module
+index 69dd46c..b08c798 100644
+--- a/isbn2node.module
++++ b/isbn2node.module
+@@ -324,10 +324,12 @@ function isbn2node_form_alter(&$form, &$form_state, $form_id) {
+               '#default_value' => 1,
+             );
+ 
+-            $form['isbn2node_use_img']['xisbn'] = array(
+-              '#type' => 'hidden',
+-              '#value' => $isbn2book_data['xisbn'],
+-            );
++            if (isset($isbn2book_data['xisbn'])) {
++              $form['isbn2node_use_img']['xisbn'] = array(
++                '#type' => 'hidden',
++                '#value' => $isbn2book_data['xisbn'],
++              );
++            }
+ 
+           }
+           else {
+-- 
+1.7.7.5 (Apple Git-26)
+
