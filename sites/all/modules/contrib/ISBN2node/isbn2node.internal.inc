@@ -383,7 +383,7 @@ function _isbn2book_search_title($title) {
       // Get and parse the Json
       $json = file_get_contents($url);
       // drupal_set_message(vad($json));
-      $vals = json_decode($json);
+      $vals = drupal_json_decode($json);
       if (count($vals) > 1) {
         $vals->success = 1;
       }
