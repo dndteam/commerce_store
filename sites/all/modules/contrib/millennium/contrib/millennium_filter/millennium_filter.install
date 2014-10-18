@@ -1,0 +1,18 @@
+<?php
+/**
+ * @file
+ * Install, update and uninstall functions for the millennium_filter module.
+ *
+ */
+
+
+/**
+ * Implements hook_uninstall().
+ */
+function millennium_filter_uninstall() {
+  // Remove variables
+  db_delete('variable')
+    ->condition('name', 'millennium_filter_%', 'LIKE')
+    ->execute();
+  cache_clear_all('variables', 'cache');
+}

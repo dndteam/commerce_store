@@ -1,0 +1,15 @@
+name = Millennium Authentication
+description = "Allows users to log in to Drupal using Millennium credentials."
+dependencies[] = millennium
+core = 7.x
+package = Millennium Integration
+
+; Configuration paths
+configure = admin/config/services/millennium/authentication
+
+; Information added by Drupal.org packaging script on 2014-09-18
+version = "7.x-2.0-alpha1+39-dev"
+core = "7.x"
+project = "millennium"
+datestamp = "1411074833"
+

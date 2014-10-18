@@ -1,0 +1,19 @@
+<?php
+/**
+ * @file
+ * Code for the Millennium starter feature.
+ */
+
+include_once 'millennium_starter.features.inc';
+
+/**
+ * Implements hook_enable().
+ */
+function millennium_starter_enable() {
+  // Assign the library_item nodetype
+  if (! variable_get('millennium_marc_node_type', FALSE)) {
+    variable_set('millennium_marc_node_type', 'library_item');
+  }
+}
+
+// TODO: Document that the millennium_starter.feature exists.

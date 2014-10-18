@@ -1,0 +1,34 @@
+name = Millennium starter
+description = Content type, vocabularies and mapping setup for Millennium module.
+core = 7.x
+package = Features
+php = 5.2.4
+dependencies[] = features
+dependencies[] = millennium
+dependencies[] = taxonomy
+dependencies[] = text
+features[features_api][] = api:1
+features[field][] = node-library_item-body
+features[field][] = node-library_item-field_author
+features[field][] = node-library_item-field_document_type
+features[field][] = node-library_item-field_genre
+features[field][] = node-library_item-field_language
+features[field][] = node-library_item-field_subject
+features[node][] = library_item
+features[taxonomy][] = author
+features[taxonomy][] = document_type
+features[taxonomy][] = genre
+features[taxonomy][] = language
+features[taxonomy][] = subject
+features[user_permission][] = administer millennium
+features[user_permission][] = import single millennium items
+features[user_permission][] = use millennium mass import/refresh
+features[user_permission][] = view millennium marc
+features[user_role][] = millennium admin
+
+; Information added by Drupal.org packaging script on 2014-09-18
+version = "7.x-2.0-alpha1+39-dev"
+core = "7.x"
+project = "millennium"
+datestamp = "1411074833"
+
