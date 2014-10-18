@@ -13,13 +13,13 @@
 function _isbn2book_fetch_data($isbn = '') {
   // This data ought to be cached locally since ISBNdb only allows a certain number of calls each day
 
-  switch (variable_get('isbn2node_db')) { 
-    case 'isbndb' : 
+  switch (variable_get('isbn2node_db')) {
+    case 'isbndb' :
       // Form the url
       $url = str_replace(array('%access_key', '%isbn_value'),
         array(variable_get('isbn2node_isbndb_access_key', ''), $isbn),
         ISBN2NODE_ISBNDB_URL);
-    
+
       // Get and parse the XML
       $xml = file_get_contents($url);
       $p = xml_parser_create();
@@ -27,7 +27,7 @@ function _isbn2book_fetch_data($isbn = '') {
       $vals['success'] = $vals['1']['attributes']['TOTAL_RESULTS'];
       xml_parser_free($p);
     break;
-  
+
     case 'openlib' :
       $url = str_replace('%isbn_value',
         $isbn,
@@ -65,9 +65,9 @@ function _isbn2node_check_settings(&$form) {
     '#markup' => l(t('Select a database here'), 'admin/config/content/isbn2node', array('query' => array('destination' => 'node/add/isbn2node_book/isbn2node'))),
     '#weight' => 150,
     );
-    
+
     $ok = FALSE;
-  
+
   }
   elseif ((variable_get('isbn2node_db', '') == 'isbndb') && !variable_get('isbn2node_isbndb_access_key', FALSE)) {
     drupal_set_message(t('You must enter an ISBNdb access key in the settings for this ISBN2node module before using this feature.'), 'error');
@@ -170,12 +170,12 @@ function _isbn2node_fetch_cover($isbn, $size = 'L') {
 function _isbn2node_parse($vals, $isbn) {
   $isbn2book_data = array();
   switch (variable_get('isbn2node_db', '')) {
-    case 'isbndb' : 
+    case 'isbndb' :
       // Work on the returned values
       if ($vals['1']['attributes']['TOTAL_RESULTS']) {
-    
+
         $interesting = _isbn2node_isbndb_tags();
-    
+
         foreach ($vals as $v) {
 
           // Get extra ISBN for backup cover check
@@ -201,7 +201,7 @@ function _isbn2node_parse($vals, $isbn) {
                       // Handle edition/year
                       $parts = explode(';', $v['attributes'][$xml_field]);
                       if (isset($parts[1])) {
-                        $isbn2book_data['isbn2node_year'] = trim($parts[1]); 
+                        $isbn2book_data['isbn2node_year'] = trim($parts[1]);
                       }
                       $v['attributes'][$xml_field] = $parts[0];
                     default :
@@ -219,13 +219,13 @@ function _isbn2node_parse($vals, $isbn) {
         }
       }
       break;
-    
+
     case 'openlib' :
       $qual = 'ISBN:' . $isbn;
       if (isset($vals->$qual)) {
         $vals = $vals->$qual;
         $interesting = _isbn2node_openlib_tags();
-        
+
         foreach ($interesting as $json => $drupal) {
           $value = '';
           if (is_array($drupal)) {
@@ -301,7 +301,7 @@ function _isbn2node_make_node($fields) {
   else {
     drupal_set_message(t('Failed creating book from ISBN @isbn.', array('@isbn' => $fields['isbn2node_isbn'])));
   }
-  
+
 }
 
 
@@ -320,10 +320,10 @@ function _isbn2node_save_cover($isbn, $xisbn = '') {
 
   // Create URL and set filename of local file
   $url = _isbn2node_fetch_cover($isbn);
-  
+
   if ($url) {
     $parts = pathinfo($url);
-  
+
     $filename = 'cover_' . $isbn . '.' . $parts['extension'];
 
     // Fetch cover file
@@ -333,7 +333,7 @@ function _isbn2node_save_cover($isbn, $xisbn = '') {
       $file = file_save_data($file_temp, 'public://' . $filename, FILE_EXISTS_RENAME);
     }
   }
-  
+
   return $file;
 }
 
@@ -360,8 +360,8 @@ function _isbn2node_isbn_exists($isbn) {
 function _isbn2book_search_title($title) {
   // This data ought to be cached locally since ISBNdb only allows a certain number of calls each day
 
-  switch (variable_get('isbn2node_db')) { 
-    case 'isbndb' : 
+  switch (variable_get('isbn2node_db')) {
+    case 'isbndb' :
       // Form the url
       $url = str_replace(array('%access_key', '%title_value'),
         array(variable_get('isbn2node_isbndb_access_key', ''), urlencode($title)),
@@ -374,7 +374,7 @@ function _isbn2book_search_title($title) {
       $vals['success'] = $vals['1']['attributes']['TOTAL_RESULTS'];
       xml_parser_free($p);
     break;
-  
+
     case 'openlib' :
       $url = str_replace('%isbn_value',
         $isbn,
@@ -383,7 +383,7 @@ function _isbn2book_search_title($title) {
       // Get and parse the Json
       $json = file_get_contents($url);
       // drupal_set_message(vad($json));
-      $vals = json_decode($json);
+      $vals = drupal_json_decode($json);
       if (count($vals) > 1) {
         $vals->success = 1;
       }
