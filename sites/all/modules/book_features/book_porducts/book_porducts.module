@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Book Porducts feature.
+ */
+
+include_once 'book_porducts.features.inc';
