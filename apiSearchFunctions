@@ -1,0 +1,17 @@
+<?php
+class Functions
+{
+	public function search($text) // global search (title, isbn, publisher ...
+	{
+		return file_get_contents("https://www.googleapis.com/books/v1/volumes?q=".urlencode($text));
+	}
+	public function searchByISBN($isbn) // only isbn search
+	{
+		return file_get_contents("https://www.googleapis.com/books/v1/volumes?q=isbn:".intval($isbn));
+	}
+}
+
+$functions = new Functions();
+echo $functions->search("Harry Potter");
+//echo $functions->searchByISBN("9780545010221");
+?>
